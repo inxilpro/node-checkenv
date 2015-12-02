@@ -27,9 +27,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
-// Flag for whether header has been sent
-var headerSent = false;
-
 // Cached config object
 var config;
 
@@ -74,11 +71,12 @@ function check() {
 		}
 
 		var pkg = require('../package.json');
-		console.log("\n" + (0, _wrapAnsi2.default)(_chalk.bgRed.white('ERROR:') + ' ' + (0, _chalk.blue)(filename) + ' is missing; see ' + (0, _chalk.underline)(pkg.homepage), _windowSize.width) + "\n");
+		console.error("\n" + (0, _wrapAnsi2.default)(_chalk.bgRed.white('ERROR:') + ' ' + (0, _chalk.blue)(filename) + ' is missing; see ' + (0, _chalk.underline)(pkg.homepage), _windowSize.width) + "\n");
 		process.exit(1);
 	}
 
-	var missing = { required: [], optional: [] };
+	var required = [];
+	var optional = [];
 
 	Object.keys(config).forEach(function (name) {
 		// Check if variable is set
@@ -92,34 +90,38 @@ function check() {
 		var alternateOptional = 'object' !== (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) && !opts;
 		var formalOptional = !alternateOptional && 'object' === (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) && 'required' in opts && false === opts.required;
 		if (alternateOptional || formalOptional) {
-			missing.optional.push(name);
+			optional.push(name);
 			return;
 		}
 
-		missing.required.push(name);
+		required.push(name);
 		if (!pretty) {
 			throw new Error('Environmental variable "' + name + '" must be set');
 		}
 	});
 
 	if (pretty) {
-		console.log();
-		if (missing.required.length) {
-			header(missing.required.length, true);
-			missing.required.forEach(function (name) {
-				console.log(help(name));
+		console.error('');
+		if (required.length) {
+			header(required.length, true);
+			required.forEach(function (name) {
+				console.error(help(name));
 			});
 		}
-		if (missing.optional.length) {
-			if (missing.required.length) {
-				console.log();
+		if (optional.length) {
+			if (required.length) {
+				console.error('');
 			}
-			header(missing.optional.length, false);
-			missing.optional.forEach(function (name) {
-				console.log(help(name));
+			header(optional.length, false);
+			optional.forEach(function (name) {
+				console.error(help(name));
 			});
 		}
-		console.log();
+		console.error('');
+	}
+
+	if (required.length) {
+		// console.log("Exiting");
 		process.exit(1);
 	}
 }
@@ -132,7 +134,7 @@ function header(count) {
 	var is = 1 === count ? 'is' : 'are';
 	var adv = required ? 'required' : 'missing (but optional)';
 	var message = ' The following ' + count + ' environmental variable' + s + ' ' + is + ' ' + adv + ': ';
-	console.log((0, _wrapAnsi2.default)(required ? _chalk.bgRed.white(message) : _chalk.bgYellow.black(message), _windowSize.width));
+	console.error((0, _wrapAnsi2.default)(required ? _chalk.bgRed.white(message) : _chalk.bgYellow.black(message), _windowSize.width));
 }
 
 // Get formatted help for variable
