@@ -121,7 +121,6 @@ function check() {
 	}
 
 	if (required.length) {
-		// console.log("Exiting");
 		process.exit(1);
 	}
 }
