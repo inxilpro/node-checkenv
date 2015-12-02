@@ -96,6 +96,9 @@ export function check(pretty = true) {
 			});
 		}
 		console.error('');
+	}
+
+	if (required.length) {
 		process.exit(1);
 	}
 }
