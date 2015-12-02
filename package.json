@@ -1,0 +1,23 @@
+{
+  "name": "checkenv",
+  "version": "1.0.0",
+  "description": "Require certain environmental variables",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel -d dist/ src/",
+    "watch": "babel -w -d dist/ src/",
+    "prepublish": "npm run build"
+  },
+  "homepage": "https://www.npmjs.com/package/checkenv",
+  "author": "Chris Morrell",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.1.18"
+  },
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "window-size": "^0.1.4",
+    "wrap-ansi": "^2.0.0"
+  }
+}
