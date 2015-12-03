@@ -3,18 +3,21 @@
 // Load dependencies
 import { resolve, sep } from 'path';
 import { accessSync, R_OK } from 'fs';
-import { debuglog } from 'util';
 import { width } from 'window-size';
 import wrap from 'wrap-ansi';
-import { underline, blue, bgRed, bgYellow } from 'chalk';
-
-const debug = debuglog('checkenv');
+import { underline, blue, yellow, bgRed, bgYellow } from 'chalk';
 
 // Cached config object
 var config;
 
 // Filename is configurable
 export var filename = 'env.json';
+
+// Debugger
+var debug = () => {};
+if ('NODE_DEBUG' in process.env && /\bcheckenv\b/i.text(process.env.NODE_DEBUG)) {
+	debug = message => console.log(yellow(`DEBUG: ${message}`));
+}
 
 // Scans directory tree for env.json
 export function scan() {
