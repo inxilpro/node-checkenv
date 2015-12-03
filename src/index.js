@@ -98,6 +98,7 @@ export function check(pretty = true) {
 			continue;
 		}
 
+		debug(`${name} is required and missing`);
 		required.push(name);
 		if (false === pretty) {
 			throw new Error(`Environmental variable "${name}" must be set`);
