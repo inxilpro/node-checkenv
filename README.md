@@ -24,6 +24,14 @@ By default, `checkenv` will print a pretty error message and call `process.exit(
 
 If you would like to handle errors yourself, `check` takes an optional `pretty` argument which causes it to throw errors instead of printing an error message.  This will only result in an error being thrown on missing required variables.
 
+``` js
+try {
+  require('checkenv').check(false);
+} catch (e) {
+  // Do something with this error
+}
+```
+
 ## Configuration
 
 Your JSON file should define the environmental variables as keys, and either a boolean (required) as the value, or a configuration object with any of the options below.
