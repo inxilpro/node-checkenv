@@ -18,6 +18,12 @@ First, define a JSON file called `env.json` in your project root (see below).  T
 require('checkenv').check();
 ```
 
+By default, `checkenv` will print a pretty error message and call `process.exit(1)` if any required variables are missing.  It will also print an error message if optional variables are missing, but will not exit the process.
+
+![Screen Shot](http://snaps.rchy.net/env.json_-_jobs.api.nachi.org_-_DevelopmentSitesjobs.api.nachi.org_2015-12-03_15-10-37.jpg)
+
+If you would like to handle errors yourself, `check` takes an optional `pretty` argument which causes it to throw errors instead of printing an error message.  This will only result in an error being thrown on missing required variables.
+
 ## Configuration
 
 Your JSON file should define the environmental variables as keys, and either a boolean (required) as the value, or a configuration object with any of the options below.
