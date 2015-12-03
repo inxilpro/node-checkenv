@@ -44,7 +44,7 @@ export function check(pretty = true) {
 	try {
 		load();
 	} catch (e) {
-		if (!pretty) {
+		if (false === pretty) {
 			throw e;
 		}
 
@@ -73,12 +73,12 @@ export function check(pretty = true) {
 		}
 
 		required.push(name);
-		if (!pretty) {
+		if (false === pretty) {
 			throw new Error(`Environmental variable "${name}" must be set`);
 		}
 	});
 
-	if (pretty) {
+	if (true === pretty && (required.length || optional.length)) {
 		console.error('');
 		if (required.length) {
 			header(required.length, true);

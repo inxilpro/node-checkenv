@@ -66,7 +66,7 @@ function check() {
 	try {
 		load();
 	} catch (e) {
-		if (!pretty) {
+		if (false === pretty) {
 			throw e;
 		}
 
@@ -95,12 +95,12 @@ function check() {
 		}
 
 		required.push(name);
-		if (!pretty) {
+		if (false === pretty) {
 			throw new Error('Environmental variable "' + name + '" must be set');
 		}
 	});
 
-	if (pretty) {
+	if (true === pretty && (required.length || optional.length)) {
 		console.error('');
 		if (required.length) {
 			header(required.length, true);
