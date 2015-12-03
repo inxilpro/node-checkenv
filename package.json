@@ -25,7 +25,8 @@
   "devDependencies": {
     "babel-preset-es2015": "^6.1.18",
     "tap-spec": "^4.1.1",
-    "tape": "^4.2.2"
+    "tape": "^4.2.2",
+    "babel-cli": "^6.2.0"
   },
   "dependencies": {
     "chalk": "^1.1.1",
