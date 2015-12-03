@@ -83,6 +83,7 @@ export function check(pretty = true) {
 
 		// Check if variable is set
 		if (name in process.env) {
+			debug(`Found variable ${name}`);
 			return;
 		}
 
@@ -92,8 +93,9 @@ export function check(pretty = true) {
 		const alternateOptional = ('object' !== typeof opts && !opts);
 		const formalOptional = (!alternateOptional && ('object' === typeof opts && 'required' in opts && false === opts.required));
 		if (alternateOptional || formalOptional) {
+			debug(`${name} is optional`);
 			optional.push(name);
-			return;
+			continue;
 		}
 
 		required.push(name);

@@ -109,6 +109,7 @@ function check() {
 
 		// Check if variable is set
 		if (name in process.env) {
+			debug('Found variable ' + name);
 			return;
 		}
 
@@ -118,8 +119,9 @@ function check() {
 		var alternateOptional = 'object' !== (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) && !opts;
 		var formalOptional = !alternateOptional && 'object' === (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) && 'required' in opts && false === opts.required;
 		if (alternateOptional || formalOptional) {
+			debug(name + ' is optional');
 			optional.push(name);
-			return;
+			continue;
 		}
 
 		required.push(name);
