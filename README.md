@@ -1,4 +1,4 @@
-# checkenv - Check Your Environment
+# `checkenv` - Check Your Environment
 
 [![Dependency Status](https://david-dm.org/inxilpro/node-checkenv.svg)](https://david-dm.org/inxilpro/node-checkenv)
 
@@ -18,7 +18,7 @@ First, define a JSON file called `env.json` in your project root (see below).  T
 require('checkenv').check();
 ```
 
-## Config file format
+## Configuration
 
 Your JSON file should define the environmental variables as keys, and either a boolean (required) as the value, or a configuration object with any of the options below.
 
@@ -37,7 +37,7 @@ Your JSON file should define the environmental variables as keys, and either a b
 }
 ```
 
-### Config options
+### Options
 
 #### `required`
 
@@ -46,6 +46,13 @@ Defines whether or not this variable is required.  By default, all variables are
 #### `description`
 
 Describes the variable and how it should be used. Useful for new developers setting up the project, and is printed in the error output if present.
+
+## Planed Enhancements
+
+There are two major enhancements in the pipeline:
+
+  1. Default values
+  2. Value validation (type, enum, regex)
 
 ## Change Log
 
