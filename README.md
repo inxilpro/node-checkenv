@@ -20,7 +20,7 @@ require('checkenv').check();
 
 By default, `checkenv` will print a pretty error message and call `process.exit(1)` if any required variables are missing.  It will also print an error message if optional variables are missing, but will not exit the process.
 
-![Screen Shot](http://snaps.rchy.net/env.json_-_jobs.api.nachi.org_-_DevelopmentSitesjobs.api.nachi.org_2015-12-03_15-10-37.jpg)
+![Screen Shot](https://cloud.githubusercontent.com/assets/21592/11572727/b600de6e-99d0-11e5-9880-ea9467f14dc5.jpg)
 
 If you would like to handle errors yourself, `check` takes an optional `pretty` argument which causes it to throw errors instead of printing an error message.  This will only result in an error being thrown on missing required variables.
 
