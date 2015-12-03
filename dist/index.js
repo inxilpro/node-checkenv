@@ -78,7 +78,7 @@ function check() {
 	var required = [];
 	var optional = [];
 
-	Object.keys(config).forEach(function (name) {
+	for (var name in config) {
 		// Check if variable is set
 		if (name in process.env) {
 			return;
@@ -98,7 +98,7 @@ function check() {
 		if (false === pretty) {
 			throw new Error('Environmental variable "' + name + '" must be set');
 		}
-	});
+	}
 
 	if (true === pretty && (required.length || optional.length)) {
 		console.error('');
