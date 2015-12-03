@@ -16,6 +16,12 @@
   "homepage": "https://www.npmjs.com/package/checkenv",
   "author": "Chris Morrell",
   "license": "MIT",
+  "keywords": [
+    "environment",
+    "env",
+    "variables",
+    "NODE_ENV"
+  ],
   "devDependencies": {
     "babel-preset-es2015": "^6.1.18"
   },
