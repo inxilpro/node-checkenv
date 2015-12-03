@@ -1,4 +1,4 @@
-# App Root Path Module
+# checkenv - Check Your Environment
 
 [![Dependency Status](https://david-dm.org/inxilpro/node-checkenv.svg)](https://david-dm.org/inxilpro/node-checkenv)
 
