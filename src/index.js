@@ -1,8 +1,8 @@
 'use strict';
 
 // Load dependencies
-import { resolve, sep } from 'path';
-import { accessSync, R_OK } from 'fs';
+import { resolve, dirname, sep } from 'path';
+import fs from 'fs';
 import { width } from 'window-size';
 import wrap from 'wrap-ansi';
 import { underline, blue, yellow, bgRed, bgYellow } from 'chalk';
@@ -19,19 +19,33 @@ if ('NODE_DEBUG' in process.env && /\bcheckenv\b/i.test(process.env.NODE_DEBUG))
 	debug = message => console.log(yellow(`DEBUG: ${message}`));
 }
 
+// Backwards-compat file exists checker
+function access(path) {
+	try {
+		debug(`Looking for ${path}`);
+		if ('accessSync' in fs) {
+			fs.accessSync(path, fs.R_OK);
+		} else {
+			fs.closeSync(fs.openSync(path, 'r'));
+		}
+		debug(`Found ${path}`);
+		return true;
+	} catch (e) {
+		debug(e.message);
+		return false;
+	}
+}
+
 // Scans directory tree for env.json
 export function scan() {
 	var current;
-	var next = resolve(module.parent.filename);
+	var next = dirname(resolve(module.parent.filename));
 	while (next !== current) {
 		current = next;
 		const path = resolve(current, filename);
-		try {
-			debug(`Looking for ${path}`);
-			accessSync(path, R_OK);
-			debug(`Found ${path}`);
+		if (access(path)) {
 			return path;
-		} catch (e) {}
+		}
 		next = resolve(current, '..');
 	}
 

@@ -15,6 +15,8 @@ var _path = require('path');
 
 var _fs = require('fs');
 
+var _fs2 = _interopRequireDefault(_fs);
+
 var _windowSize = require('window-size');
 
 var _wrapAnsi = require('wrap-ansi');
@@ -41,19 +43,33 @@ if ('NODE_DEBUG' in process.env && /\bcheckenv\b/i.test(process.env.NODE_DEBUG))
 	};
 }
 
+// Backwards-compat file exists checker
+function access(path) {
+	try {
+		debug('Looking for ' + path);
+		if ('accessSync' in _fs2.default) {
+			_fs2.default.accessSync(path, _fs2.default.R_OK);
+		} else {
+			_fs2.default.closeSync(_fs2.default.openSync(path, 'r'));
+		}
+		debug('Found ' + path);
+		return true;
+	} catch (e) {
+		debug(e.message);
+		return false;
+	}
+}
+
 // Scans directory tree for env.json
 function scan() {
 	var current;
-	var next = (0, _path.resolve)(module.parent.filename);
+	var next = (0, _path.dirname)((0, _path.resolve)(module.parent.filename));
 	while (next !== current) {
 		current = next;
 		var path = (0, _path.resolve)(current, filename);
-		try {
-			debug('Looking for ' + path);
-			(0, _fs.accessSync)(path, _fs.R_OK);
-			debug('Found ' + path);
+		if (access(path)) {
 			return path;
-		} catch (e) {}
+		}
 		next = (0, _path.resolve)(current, '..');
 	}
 
