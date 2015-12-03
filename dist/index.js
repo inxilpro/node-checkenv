@@ -15,6 +15,8 @@ var _path = require('path');
 
 var _fs = require('fs');
 
+var _util = require('util');
+
 var _windowSize = require('window-size');
 
 var _wrapAnsi = require('wrap-ansi');
@@ -26,6 +28,8 @@ var _chalk = require('chalk');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
+var debug = (0, _util.debuglog)('checkenv');
 
 // Cached config object
 var config;
@@ -41,7 +45,9 @@ function scan() {
 		current = next;
 		var path = (0, _path.resolve)(current, filename);
 		try {
+			debug('Looking for ' + path);
 			(0, _fs.accessSync)(path, _fs.R_OK);
+			debug('Found ' + path);
 			return path;
 		} catch (e) {}
 		next = (0, _path.resolve)(current, '..');
@@ -79,6 +85,8 @@ function check() {
 	var optional = [];
 
 	for (var name in config) {
+		debug('Checking for variable ' + name);
+
 		// Check if variable is set
 		if (name in process.env) {
 			return;

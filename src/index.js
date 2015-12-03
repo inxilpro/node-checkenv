@@ -3,9 +3,12 @@
 // Load dependencies
 import { resolve, sep } from 'path';
 import { accessSync, R_OK } from 'fs';
+import { debuglog } from 'util';
 import { width } from 'window-size';
 import wrap from 'wrap-ansi';
 import { underline, blue, bgRed, bgYellow } from 'chalk';
+
+const debug = debuglog('checkenv');
 
 // Cached config object
 var config;
@@ -21,7 +24,9 @@ export function scan() {
 		current = next;
 		const path = resolve(current, filename);
 		try {
+			debug(`Looking for ${path}`);
 			accessSync(path, R_OK);
+			debug(`Found ${path}`);
 			return path;
 		} catch (e) {}
 		next = resolve(current, '..');
@@ -57,6 +62,8 @@ export function check(pretty = true) {
 	let optional = [];
 
 	for (var name in config) {
+		debug(`Checking for variable ${name}`);
+
 		// Check if variable is set
 		if (name in process.env) {
 			return;
