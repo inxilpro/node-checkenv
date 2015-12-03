@@ -5,18 +5,11 @@ var checkenv = require(require('../loader')());
 var spy = require('../spy.js');
 
 function reset(pass) {
-	spy.reset();
+	var vars;
 	if (pass) {
-		process.env.A = true;
-		process.env.B = true;
-	} else {
-		if ('A' in process.env) {
-			delete process.env.A;
-		}
-		if ('B' in process.env) {
-			delete process.env.B;
-		}
+		vars = ['A', 'B']
 	}
+	spy.reset(vars);
 }
 
 tape('WHEN VARIABLES ARE OPTIONAL:', function(s) {
