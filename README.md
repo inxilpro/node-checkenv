@@ -56,5 +56,8 @@ There are two major enhancements in the pipeline:
 
 ## Change Log
 
+### 1.0.5
+  - Passes tests for node 0.10 through 5.1
+
 ### 1.0.0
   - Initial release
