@@ -1,6 +1,6 @@
 # `checkenv` - Check Your Environment
 
-[![Dependency Status](https://david-dm.org/inxilpro/node-checkenv.svg)](https://david-dm.org/inxilpro/node-checkenv)
+[![Build Status](https://travis-ci.org/inxilpro/node-checkenv.svg)](https://travis-ci.org/inxilpro/node-checkenv) [![Dependency Status](https://david-dm.org/inxilpro/node-checkenv.svg)](https://david-dm.org/inxilpro/node-checkenv)
 
 This module lets you define the environmental variables your application relies on in `env.json` and then provides a method to check for these variables at application launch.
 
