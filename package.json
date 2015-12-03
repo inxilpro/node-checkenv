@@ -4,8 +4,8 @@
   "description": "Require certain environmental variables",
   "main": "dist/index.js",
   "scripts": {
-    "test": "node test/runner.js | tap-spec",
-    "test-src": "TEST_SRC=1 babel-node test/runner.js | tap-spec",
+    "test": "tape test/**/*.js | tap-spec",
+    "test-src": "TEST_SRC=1 NODE_DEBUG=checkenv tape test/**/*.js | tap-spec",
     "build": "babel -d dist/ src/",
     "watch": "babel -w -d dist/ src/",
     "prepublish": "npm run build"

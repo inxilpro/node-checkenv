@@ -1,23 +1,11 @@
 'use strict';
 
 var tape = require('tape');	
-var checkenv = require('../../' + process.argv[2] + '/index');
-
-// Shims
-var _exit = process.exit;
-var _err = console.error;
-process.exit = function(code) { exited = true; lastcode = code; };
-console.error = function(m) { errored++ };
-
-var exited = false;
-var errored = 0;
-var lastcode;
+var checkenv = require(require('../loader')());
+var spy = require('../spy.js');
 
 function reset(pass) {
-	exited = false;
-	errored = 0;
-	lastcode = null;
-
+	spy.reset();
 	if (pass) {
 		process.env.A = true;
 		process.env.B = true;
@@ -31,33 +19,41 @@ function reset(pass) {
 	}
 }
 
-tape('check()', function(t) {
-	t.plan(5);
+tape('WHEN VARIABLES ARE REQUIRED:', function(s) {
+	s.test('check()', function(t) {
+		t.plan(5);
+		spy.setup();
 
-	reset();
-	checkenv.check();
-	t.equal(exited, true, 'should call process.exit() if required variables are missing');
-	t.ok(lastcode > 0, 'should exit with a non-zero exit code if process.exit() is called');
-	t.ok(errored > 0, 'should call console.error() if required variables are missing');
+		reset();
+		checkenv.check();
+		t.equal(spy.exitCount(), 1, 'should call process.exit() if required variables are missing');
+		t.ok(spy.lastExitCode() > 0, 'should exit with a non-zero exit code if process.exit() is called');
+		t.ok(spy.errorCount() > 0, 'should call console.error() if required variables are missing');
 
-	reset(true);
-	checkenv.check();
-	t.equal(exited, false, 'should not call process.exit() if required variables are set');
-	t.equal(errored, 0, 'should not call console.error() if required variables are set');
-});
+		reset(true);
+		checkenv.check();
+		t.equal(spy.exitCount(), 0, 'should not call process.exit() if required variables are set');
+		t.equal(spy.errorCount(), 0, 'should not call console.error() if required variables are set');
 
-tape('check(false)', function(t) {
-	t.plan(4);
+		spy.restore();
+	});
 
-	reset();
-	t.throws(function() {
-		checkenv.check(false);
-	}, 'should throw an error if required variables are missing');
-	t.equal(errored, 0, 'and should not call console.error()');
+	s.test('check(false)', function(t) {
+		t.plan(4);
+		spy.setup();
 
-	reset(true);
-	t.doesNotThrow(function() {
-		checkenv.check(false);
-	}, 'should not throw an error if required variables are set');
-	t.equal(errored, 0, 'and should not call console.error()');
+		reset();
+		t.throws(function() {
+			checkenv.check(false);
+		}, 'should throw an error if required variables are missing');
+		t.equal(spy.errorCount(), 0, 'and should not call console.error()');
+
+		reset(true);
+		t.doesNotThrow(function() {
+			checkenv.check(false);
+		}, 'should not throw an error if required variables are set');
+		t.equal(spy.errorCount(), 0, 'and should not call console.error()');
+
+		spy.restore();
+	});
 });

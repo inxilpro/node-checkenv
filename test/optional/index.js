@@ -1,16 +1,11 @@
 'use strict';
 
 var tape = require('tape');	
-var checkenv = require('../../' + process.argv[2] + '/index');
+var checkenv = require(require('../loader')());
+var spy = require('../spy.js');
 
-// Shims
-var _err = console.error;
-console.error = function(m) { errored++ };
-
-var errored = 0;
 function reset(pass) {
-	errored = 0;
-
+	spy.reset();
 	if (pass) {
 		process.env.A = true;
 		process.env.B = true;
@@ -24,30 +19,38 @@ function reset(pass) {
 	}
 }
 
-tape('check()', function(t) {
-	t.plan(2);
+tape('WHEN VARIABLES ARE OPTIONAL:', function(s) {
+	s.test('check()', function(t) {
+		t.plan(2);
+		spy.setup();
 
-	reset();
-	checkenv.check();
-	t.ok(errored > 0, 'should call console.error() if optional variables are missing');
+		reset();
+		checkenv.check();
+		t.ok(spy.errorCount() > 0, 'should call console.error() if optional variables are missing');
 
-	reset(true);
-	checkenv.check();
-	t.equal(errored, 0, 'should not call console.error() if all variables are set');
-});
+		reset(true);
+		checkenv.check();
+		t.equal(spy.errorCount(), 0, 'should not call console.error() if all variables are set');
 
-tape('check(false)', function(t) {
-	t.plan(4);
+		spy.restore();
+	});
 
-	reset();
-	t.doesNotThrow(function() {
-		checkenv.check(false);
-	}, 'should not throw an error if optional variables are missing');
-	t.equal(errored, 0, 'and should not call console.error()');
+	s.test('check(false)', function(t) {
+		t.plan(4);
+		spy.setup();
 
-	reset(true);
-	t.doesNotThrow(function() {
-		checkenv.check(false);
-	}, 'should not throw an error if optional variables are set');
-	t.equal(errored, 0, 'and should not call console.error()');
+		reset();
+		t.doesNotThrow(function() {
+			checkenv.check(false);
+		}, 'should not throw an error if optional variables are missing');
+		t.equal(spy.errorCount(), 0, 'and should not call console.error()');
+
+		reset(true);
+		t.doesNotThrow(function() {
+			checkenv.check(false);
+		}, 'should not throw an error if optional variables are set');
+		t.equal(spy.errorCount(), 0, 'and should not call console.error()');
+
+		spy.restore();
+	});
 });
