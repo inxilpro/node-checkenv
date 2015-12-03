@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "tape test/**/*.js | tap-spec",
-    "test-src": "TEST_SRC=1 NODE_DEBUG=checkenv tape test/**/*.js | tap-spec",
+    "test-src": "TEST_SRC=1 tape test/**/*.js | tap-spec",
+    "test-debug": "NODE_DEBUG=checkenv npm run test-src",
     "build": "babel -d dist/ src/",
     "watch": "babel -w -d dist/ src/",
     "prepublish": "npm run build"
