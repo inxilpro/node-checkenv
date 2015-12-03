@@ -15,8 +15,6 @@ var _path = require('path');
 
 var _fs = require('fs');
 
-var _util = require('util');
-
 var _windowSize = require('window-size');
 
 var _wrapAnsi = require('wrap-ansi');
@@ -29,13 +27,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
-var debug = (0, _util.debuglog)('checkenv');
-
 // Cached config object
 var config;
 
 // Filename is configurable
 var filename = exports.filename = 'env.json';
+
+// Debugger
+var debug = function debug() {};
+if ('NODE_DEBUG' in process.env && /\bcheckenv\b/i.test(process.env.NODE_DEBUG)) {
+	debug = function (message) {
+		return console.log((0, _chalk.yellow)('DEBUG: ' + message));
+	};
+}
 
 // Scans directory tree for env.json
 function scan() {

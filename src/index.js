@@ -15,7 +15,7 @@ export var filename = 'env.json';
 
 // Debugger
 var debug = () => {};
-if ('NODE_DEBUG' in process.env && /\bcheckenv\b/i.text(process.env.NODE_DEBUG)) {
+if ('NODE_DEBUG' in process.env && /\bcheckenv\b/i.test(process.env.NODE_DEBUG)) {
 	debug = message => console.log(yellow(`DEBUG: ${message}`));
 }
 
