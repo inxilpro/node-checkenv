@@ -42,7 +42,7 @@ Your JSON file should define the environmental variables as keys, and either a b
 ``` json
 {
   "NODE_ENV": {
-    "description": "This defines the current environment",
+    "description": "This defines the current environment"
   },
   "PORT": {
     "required": false,
