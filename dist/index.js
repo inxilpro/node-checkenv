@@ -110,7 +110,7 @@ function check() {
 		// Check if variable is set
 		if (name in process.env) {
 			debug('Found variable ' + name);
-			return;
+			continue;
 		}
 
 		var opts = config[name];
@@ -151,6 +151,7 @@ function check() {
 		console.error('');
 	}
 
+	debug('Required missing: ' + required.length);
 	if (required.length) {
 		process.exit(1);
 	}
