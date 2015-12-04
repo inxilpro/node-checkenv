@@ -7,6 +7,7 @@
     "test": "tape test/**/*.js | tap-spec",
     "test-src": "TEST_SRC=1 tape test/**/*.js | tap-spec",
     "test-debug": "NODE_DEBUG=checkenv npm run test-src",
+    "test-validators": "TEST_SRC=1 tape test/validators/*.js | tap-spec",
     "coverage": "istanbul cover tape test/**/*.js | tap-spec",
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls",
     "build": "babel -d dist/ src/",
@@ -39,6 +40,7 @@
   },
   "dependencies": {
     "chalk": "^1.1.1",
+    "validator": "^4.3.0",
     "window-size": "^0.1.4",
     "wrap-ansi": "^2.0.0"
   }

@@ -42,7 +42,11 @@ Your JSON file should define the environmental variables as keys, and either a b
 ``` json
 {
   "NODE_ENV": {
-    "description": "This defines the current environment"
+    "description": "This defines the current environment",
+    "validators": [{
+      "name": "in",
+      "options": ["development", "testing", "staging", "production"]
+    }]
   },
   "PORT": {
     "description": "This is the port the API server will run on",
