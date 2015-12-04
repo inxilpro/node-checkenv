@@ -70,6 +70,16 @@ There are two major enhancements in the pipeline:
   1. Default values
   2. Value validation (type, enum, regex)
 
+### See Also
+
+If you like this module, you may also want to check out:
+
+  - [`dotenv`](https://github.com/motdotla/dotenv) Load missing environmental variables from `.env`
+  - [`app-root-path`](https://github.com/inxilpro/node-app-root-path) Automatically determine 
+    the root path for the current application
+  - [`enforce-node-path`](https://github.com/inxilpro/enforce-node-path) Enforce the usage of 
+    the `NODE_PATH` environmental variable
+
 ## Change Log
 
 ### 1.0.6
