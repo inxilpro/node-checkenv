@@ -8,6 +8,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.options = options;
 exports.setFilename = setFilename;
 exports.scan = scan;
 exports.load = load;
@@ -73,6 +74,19 @@ function access(path) {
 	}
 }
 
+// Load options, including defaults, for a variable
+function options(name) {
+	load();
+
+	if (!(name in config)) {
+		throw new Error('No configuration for "' + name + '"');
+	}
+
+	// Build opts
+	var userOpts = 'object' === _typeof(config[name]) ? config[name] : { 'required': false !== config[name] };
+	return _extends({}, defaultOpts, userOpts);
+}
+
 function setFilename(newFilename) {
 	filename = newFilename;
 }
@@ -124,33 +138,22 @@ function check() {
 	for (var name in config) {
 		debug('Checking for variable ' + name);
 
+		// Load opts
+		var opts = options(name);
+
 		// Check if variable is set
 		if (name in process.env) {
 			debug('Found variable ' + name);
 			continue;
 		}
 
-		// Build opts
-		var userOpts = 'object' === _typeof(config[name]) ? config[name] : { 'required': false !== config[name] };
-		var opts = _extends({}, defaultOpts, userOpts);
-
 		// Check if default is set
 		if (opts.default) {
 			debug('Setting ' + name + ' to ' + JSON.stringify(opts.default));
 			process.env[name] = opts.default;
+			optional.push(name);
 			continue;
 		}
-
-		/*
-  const defaultConfig = {
-  	'required': true,
-  	'description': null,
-  	'default': null,
-  	'type': null,
-  	'regex': null,
-  	'enum': null
-  };
-  */
 
 		// Check if variable is set as optional
 		if (false === opts.required) {
@@ -206,15 +209,21 @@ function header(count) {
 // Get formatted help for variable
 function help(name) {
 	load();
+
 	if (!(name in config)) {
 		throw new Error('No configuration for "' + name + '"');
 	}
 
+	var opts = options(name);
 	var help = (0, _chalk.blue)(name);
 
-	if ('object' === _typeof(config[name]) && 'description' in config[name]) {
-		help += " " + (0, _wrapAnsi2.default)(config[name].description, _windowSize.width);
+	if (opts.default) {
+		help += (0, _chalk.yellow)(' (default=' + opts.default + ')');
 	}
 
-	return help;
+	if (opts.description) {
+		help += ' ' + opts.description;
+	}
+
+	return (0, _wrapAnsi2.default)(help, _windowSize.width);
 }

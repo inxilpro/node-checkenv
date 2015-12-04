@@ -46,6 +46,22 @@ function access(path) {
 	}
 }
 
+// Load options, including defaults, for a variable
+export function options(name) {
+	load();
+
+	if (!(name in config)) {
+		throw new Error(`No configuration for "${name}"`);
+	}
+
+	// Build opts
+	const userOpts = ('object' === typeof config[name] ? config[name] : { 'required': (false !== config[name]) });
+	return {
+		...defaultOpts,
+		...userOpts
+	};
+}
+
 export function setFilename(newFilename) {
 	filename = newFilename;
 }
@@ -95,36 +111,22 @@ export function check(pretty = true) {
 	for (var name in config) {
 		debug(`Checking for variable ${name}`);
 
+		// Load opts
+		const opts = options(name);
+
 		// Check if variable is set
 		if (name in process.env) {
 			debug(`Found variable ${name}`);
 			continue;
 		}
 
-		// Build opts
-		const userOpts = ('object' === typeof config[name] ? config[name] : { 'required': (false !== config[name]) });
-		const opts = {
-			...defaultOpts,
-			...userOpts
-		};
-
 		// Check if default is set
 		if (opts.default) {
 			debug(`Setting ${name} to ${JSON.stringify(opts.default)}`);
 			process.env[name] = opts.default;
+			optional.push(name);
 			continue;
 		}
-
-		/*
-		const defaultConfig = {
-			'required': true,
-			'description': null,
-			'default': null,
-			'type': null,
-			'regex': null,
-			'enum': null
-		};
-		*/
 
 		// Check if variable is set as optional
 		if (false === opts.required) {
@@ -179,16 +181,22 @@ function header(count, required = true) {
 export function help(name)
 {
 	load();
+
 	if (!(name in config)) {
 		throw new Error(`No configuration for "${name}"`);
 	}
 
+	const opts = options(name);
 	let help = blue(name);
 
-	if ('object' === typeof config[name] && 'description' in config[name]) {
-		help += " " + wrap(config[name].description, width);
+	if (opts.default) {
+		help += yellow(` (default=${opts.default})`);
 	}
 
-	return help;
+	if (opts.description) {
+		help += ` ${opts.description}`;
+	}
+
+	return wrap(help, width);
 }
 
