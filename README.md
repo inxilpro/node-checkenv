@@ -72,7 +72,7 @@ Defines the default value to use if variable is unset. Implicitly sets `required
 
 ## Planed Enhancements
 
-There are two major enhancements in the pipeline:
+There is one major enhancements in the pipeline:
 
   1. Value validation (type, enum, regex)
 
