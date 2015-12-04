@@ -88,6 +88,9 @@ If you like this module, you may also want to check out:
 
 ## Change Log
 
+### 1.1.1
+  - Prints default value in help
+
 ### 1.1.0
   - Added support for default values
   - Added support to change filename via `setFilename()`
