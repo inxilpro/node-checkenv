@@ -13,6 +13,16 @@ var config;
 // Filename is configurable
 var filename = 'env.json';
 
+// Default config
+const defaultOpts = {
+	'required': true,
+	'description': null,
+	'default': null,
+	'type': null,
+	'regex': null,
+	'enum': null
+};
+
 // Debugger
 var debug = () => {};
 if ('NODE_DEBUG' in process.env && /\bcheckenv\b/i.test(process.env.NODE_DEBUG)) {
@@ -91,12 +101,33 @@ export function check(pretty = true) {
 			continue;
 		}
 
-		const opts = config[name];
+		// Build opts
+		const userOpts = ('object' === typeof config[name] ? config[name] : { 'required': (false !== config[name]) });
+		const opts = {
+			...defaultOpts,
+			...userOpts
+		};
+
+		// Check if default is set
+		if (opts.default) {
+			debug(`Setting ${name} to ${JSON.stringify(opts.default)}`);
+			process.env[name] = opts.default;
+			continue;
+		}
+
+		/*
+		const defaultConfig = {
+			'required': true,
+			'description': null,
+			'default': null,
+			'type': null,
+			'regex': null,
+			'enum': null
+		};
+		*/
 
 		// Check if variable is set as optional
-		const alternateOptional = ('object' !== typeof opts && !opts);
-		const formalOptional = (!alternateOptional && ('object' === typeof opts && 'required' in opts && false === opts.required));
-		if (alternateOptional || formalOptional) {
+		if (false === opts.required) {
 			debug(`${name} is optional`);
 			optional.push(name);
 			continue;
@@ -148,7 +179,7 @@ function header(count, required = true) {
 export function help(name)
 {
 	load();
-	if (!name in config) {
+	if (!(name in config)) {
 		throw new Error(`No configuration for "${name}"`);
 	}
 

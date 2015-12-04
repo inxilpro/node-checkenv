@@ -41,7 +41,7 @@ exports.reset = function(vars) {
 	if (Array.isArray(vars)) {
 		vars.forEach(function(key) {
 			managedVars.push(key);
-			process.env[key] = true;
+			process.env[key] = 'set by spy';
 		});
 	}
 };
