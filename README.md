@@ -1,6 +1,6 @@
 # `checkenv` - Check Your Environment
 
-[![Build Status](https://travis-ci.org/inxilpro/node-checkenv.svg)](https://travis-ci.org/inxilpro/node-checkenv) [![Dependency Status](https://david-dm.org/inxilpro/node-checkenv.svg)](https://david-dm.org/inxilpro/node-checkenv) [![Coverage Status](https://coveralls.io/repos/inxilpro/node-checkenv/badge.svg?branch=master&service=github)](https://coveralls.io/github/inxilpro/node-checkenv?branch=master)
+[![npm version](https://badge.fury.io/js/checkenv.svg)](https://www.npmjs.com/package/checkenv) [![Build Status](https://travis-ci.org/inxilpro/node-checkenv.svg)](https://travis-ci.org/inxilpro/node-checkenv) [![Coverage Status](https://coveralls.io/repos/inxilpro/node-checkenv/badge.svg?branch=master&service=github)](https://coveralls.io/github/inxilpro/node-checkenv?branch=master) [![Dependency Status](https://david-dm.org/inxilpro/node-checkenv.svg)](https://david-dm.org/inxilpro/node-checkenv)
 
 A modern best-practice is to [store your application's configuration in environmental variables](http://12factor.net/config).  This allows you to keep all config data outside of your repository, and store it in a standard, system-agnotic location.  Modern build/deploy/development tools make it easier to manage these variables per-host, but they're still often undocumented, and can lead to bugs when missing.
 
