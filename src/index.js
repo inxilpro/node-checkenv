@@ -11,7 +11,7 @@ import { underline, blue, yellow, bgRed, bgYellow } from 'chalk';
 var config;
 
 // Filename is configurable
-export var filename = 'env.json';
+var filename = 'env.json';
 
 // Debugger
 var debug = () => {};
@@ -34,6 +34,10 @@ function access(path) {
 		debug(e.message);
 		return false;
 	}
+}
+
+export function setFilename(newFilename) {
+	filename = newFilename;
 }
 
 // Scans directory tree for env.json
