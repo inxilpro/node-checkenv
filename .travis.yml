@@ -12,3 +12,7 @@ node_js:
   - "0.10"
 env:
   - NODE_DEBUG=checkenv
+script:
+  - npm run test
+after_script:
+  - npm run coveralls

@@ -7,6 +7,8 @@
     "test": "tape test/**/*.js | tap-spec",
     "test-src": "TEST_SRC=1 tape test/**/*.js | tap-spec",
     "test-debug": "NODE_DEBUG=checkenv npm run test-src",
+    "coverage": "istanbul cover tape test/**/*.js | tap-spec",
+    "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls",
     "build": "babel -d dist/ src/",
     "watch": "babel -w -d dist/ src/",
     "prepublish": "npm run build"
@@ -28,7 +30,9 @@
     "babel-cli": "^6.2.0",
     "babel-core": "^6.2.1",
     "babel-preset-es2015": "^6.1.18",
+    "coveralls": "^2.11.4",
     "glob": "^6.0.1",
+    "istanbul": "^0.4.1",
     "tap-spec": "^4.1.1",
     "tape": "^4.2.2"
   },
