@@ -72,6 +72,9 @@ There are two major enhancements in the pipeline:
 
 ## Change Log
 
+### 1.0.6
+  - Bugfix — please do not use versions before 1.0.6
+
 ### 1.0.5
   - Passes tests for node 0.10 through 5.1
 
