@@ -45,11 +45,14 @@ Your JSON file should define the environmental variables as keys, and either a b
     "description": "This defines the current environment"
   },
   "PORT": {
-    "required": false,
-    "description": "This is the port the API server will run on"
+    "description": "This is the port the API server will run on",
+    "default": 3000
   },
   "NODE_PATH": true,
-  "DEBUG": false
+  "DEBUG": {
+    "required": false,
+    "description": "If set, enables additional debug messages"
+  }
 }
 ```
 
@@ -63,12 +66,15 @@ Defines whether or not this variable is required.  By default, all variables are
 
 Describes the variable and how it should be used. Useful for new developers setting up the project, and is printed in the error output if present.
 
+#### `default`
+
+Defines the default value to use if variable is unset. Implicitly sets `required` to `false`.
+
 ## Planed Enhancements
 
 There are two major enhancements in the pipeline:
 
-  1. Default values
-  2. Value validation (type, enum, regex)
+  1. Value validation (type, enum, regex)
 
 ### See Also
 
@@ -81,6 +87,10 @@ If you like this module, you may also want to check out:
     the `NODE_PATH` environmental variable
 
 ## Change Log
+
+### 1.1.0
+  - Added support for default values
+  - Added support to change filename via `setFilename()`
 
 ### 1.0.6
   - Bugfix — please do not use versions before 1.0.6
