@@ -2,10 +2,13 @@
 
 // Load dependencies
 ;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.filename = undefined;
+exports.setFilename = setFilename;
 exports.scan = scan;
 exports.load = load;
 exports.check = check;
@@ -33,7 +36,17 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 var config;
 
 // Filename is configurable
-var filename = exports.filename = 'env.json';
+var filename = 'env.json';
+
+// Default config
+var defaultOpts = {
+	'required': true,
+	'description': null,
+	'default': null,
+	'type': null,
+	'regex': null,
+	'enum': null
+};
 
 // Debugger
 var debug = function debug() {};
@@ -58,6 +71,10 @@ function access(path) {
 		debug(e.message);
 		return false;
 	}
+}
+
+function setFilename(newFilename) {
+	filename = newFilename;
 }
 
 // Scans directory tree for env.json
@@ -113,12 +130,30 @@ function check() {
 			continue;
 		}
 
-		var opts = config[name];
+		// Build opts
+		var userOpts = 'object' === _typeof(config[name]) ? config[name] : { 'required': false !== config[name] };
+		var opts = _extends({}, defaultOpts, userOpts);
+
+		// Check if default is set
+		if (opts.default) {
+			debug('Setting ' + name + ' to ' + JSON.stringify(opts.default));
+			process.env[name] = opts.default;
+			continue;
+		}
+
+		/*
+  const defaultConfig = {
+  	'required': true,
+  	'description': null,
+  	'default': null,
+  	'type': null,
+  	'regex': null,
+  	'enum': null
+  };
+  */
 
 		// Check if variable is set as optional
-		var alternateOptional = 'object' !== (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) && !opts;
-		var formalOptional = !alternateOptional && 'object' === (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) && 'required' in opts && false === opts.required;
-		if (alternateOptional || formalOptional) {
+		if (false === opts.required) {
 			debug(name + ' is optional');
 			optional.push(name);
 			continue;
@@ -171,7 +206,7 @@ function header(count) {
 // Get formatted help for variable
 function help(name) {
 	load();
-	if (!name in config) {
+	if (!(name in config)) {
 		throw new Error('No configuration for "' + name + '"');
 	}
 
