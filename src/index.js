@@ -85,6 +85,10 @@ export function check(pretty = true) {
 		if (name in process.env) {
 			debug(`Found variable ${name}`);
 			continue;
+		} else if (config[name].hasOwnProperty('default')) {
+			// Applying default values.
+			process.env[name] = config[name].default;
+			continue;
 		}
 
 		const opts = config[name];
