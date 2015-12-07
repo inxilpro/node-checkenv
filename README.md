@@ -74,11 +74,62 @@ Describes the variable and how it should be used. Useful for new developers sett
 
 Defines the default value to use if variable is unset. Implicitly sets `required` to `false`.
 
-## Planed Enhancements
+#### `validators`
 
-There is one major enhancements in the pipeline:
+An array of validators that the variable must pass.  See [validator.js](https://github.com/chriso/validator.js) for details about all validators.  Format for each validator is:
 
-  1. Value validation (type, enum, regex)
+``` javascript
+{
+  /* ... */
+  "validators": [
+    "validator name", // Option-less validators can be passed as strings
+    { // Validators w/ options must be passed as objects
+      "name": "validator name",
+      "options": options // Option format varies, see below
+    }
+  ]
+  /* ... */
+}
+```
+
+Possible validators (see [validator.js](https://github.com/chriso/validator.js) for details):
+
+  - `contains` — `options` should be a string with what the value should contain
+  - `equals` — `options` should be a string of the exact value
+  - `before` — `options` should be a date
+  - `after` — `options` should be a date
+  - `alpha`
+  - `alphanumeric`
+  - `ascii`
+  - `base64`
+  - `boolean`
+  - `date`
+  - `decimal`
+  - `fqdn`
+  - `float` — `options` MAY be an object with `min` or `max` properties
+  - `hex-color`
+  - `hexadecimal`
+  - `ip4` — same as `ip` with `"options": 4`
+  - `ip6` — same as `ip` with `"options": 6`
+  - `ip` — `options` MAY be number (`4` or `6`)
+  - `iso8601`
+  - `enum` — alias for `in`
+  - `in` — `options` MUST be an array of possible values
+  - `int` — `options` MAY be an object with `min` or `max` properties
+  - `json`
+  - `length` — `options` MUST be an object with `min`, `max` or both
+  - `lowercase`
+  - `mac-address`
+  - `numeric`
+  - `url`
+  - `uuid3` — same as `uuid` with `"options": 3`
+  - `uuid4` — same as `uuid` with `"options": 4`
+  - `uuid5` — same as `uuid` with `"options": 5`
+  - `uuid` — `options` MAY be a number (`3`, `4` or `5`)
+  - `uppercase`
+  - `regex` — alias for `matches`
+  - `regexp` — alias for `matches`
+  - `matches` — `options` MUST be either a string representing a regex, or an array in the format `["regex", "modifiers"]`
 
 ### See Also
 
@@ -91,6 +142,9 @@ If you like this module, you may also want to check out:
     the `NODE_PATH` environmental variable
 
 ## Change Log
+
+### 1.2.0
+  - Validation (via [validator.js](https://github.com/chriso/validator.js))
 
 ### 1.1.1
   - Prints default value in help
