@@ -103,6 +103,10 @@ function validateOptions(name, options, expectedType = 'object') {
 }
 
 function minMaxMessage(options) {
+	if (!options || 'object' !== typeof options) {
+		return '';
+	}
+
 	if (options.min && options.max) {
 		return ` between ${options.min} and ${options.max}`;
 	} else if (options.min) {
@@ -272,7 +276,7 @@ export function validate(name, value) {
 
 			case 'int':
 				if (!validator.isInt(value, options)) {
-					errors.push('Must be a integer' + minMaxMessage(options));
+					errors.push('Must be an integer' + minMaxMessage(options));
 				}
 				break;
 
@@ -284,10 +288,14 @@ export function validate(name, value) {
 
 			case 'length':
 				validateOptions(name, options, 'object');
-				if (!options.min) {
-					throw new Error(`The "${name}" validator requires a "min" option`);
+				if (!options.min && !options.max) {
+					throw new Error(`The "${name}" validator requires a "min" or a "max" option`);
 				}
-				if (!validator.isLength(value, options)) {
+
+				var min = options.min || 0;
+				var max = options.max || undefined;
+
+				if (!validator.isLength(value, min, max)) {
 					errors.push('Must have a character length' + minMaxMessage(options));
 				}
 				break;
@@ -306,7 +314,7 @@ export function validate(name, value) {
 
 			case 'numeric':
 				if (!validator.isNumeric(value)) {
-					errors.push('Must only contain numbers');
+					errors.push('Must be numeric');
 				}
 				break;
 
@@ -344,10 +352,14 @@ export function validate(name, value) {
 					options = [options];
 				}
 				validateOptions(name, options, 'array');
+
+				var res;
 				if (1 === options.length) {
-					options.push(null);
+					res = validator.matches(value, options[0]);
+				} else if (2 === options.length) {
+					res = validator.matches(value, options[0], options[1]);
 				}
-				if (!validator.matches(value, options[0], options[1])) {
+				if (!res) {
 					errors.push(`Must match the regular expression /${options[0]}/${options[1]}`);
 				}
 				break;
@@ -389,7 +401,9 @@ export function check(pretty = true) {
 			const errors = validate(name, process.env[name]);
 			if (errors.length) {
 				if (false === pretty) {
-					throw new Error(`Environmental variable "${name}" did not pass validation`); // FIXME
+					var err = new Error(`Environmental variable "${name}" did not pass validation`);
+					err.validationMessages = errors;
+					throw err;
 				}
 				validationErrors.push({ name, errors });
 			}
