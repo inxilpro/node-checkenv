@@ -381,7 +381,7 @@ export function check(pretty = true) {
 			throw e;
 		}
 
-		if (e.toString().includes('SyntaxError')) {
+		if (e.toString().indexOf('SyntaxError') !== -1) {
 			throw new Error(e);
 		}
 		else {
