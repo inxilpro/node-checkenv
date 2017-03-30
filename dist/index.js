@@ -1,9 +1,10 @@
-'use strict'
+'use strict';
 
 // Load dependencies
-;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -36,8 +37,6 @@ var _validator = require('validator');
 var _validator2 = _interopRequireDefault(_validator);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
 // Cached config object
 var config;
@@ -413,12 +412,13 @@ function check() {
 	try {
 		load();
 	} catch (e) {
-		if (false === pretty) {
+
+		if (false === pretty || e.toString().indexOf('SyntaxError') !== -1) {
 			throw e;
 		}
 
 		var pkg = require('../package.json');
-		console.error("\n" + (0, _wrapAnsi2.default)(_chalk.bgRed.white('ERROR:') + ' ' + (0, _chalk.blue)(filename) + ' is missing; see ' + (0, _chalk.underline)(pkg.homepage), _windowSize.width) + "\n");
+		console.error("\n" + (0, _wrapAnsi2.default)(_chalk.bgRed.white('ERROR:') + ' Unable to load ' + (0, _chalk.blue)(filename) + '; see ' + (0, _chalk.underline)(pkg.homepage), _windowSize.width) + "\n");
 		process.exit(1);
 	}
 

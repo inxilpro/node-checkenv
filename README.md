@@ -143,6 +143,9 @@ If you like this module, you may also want to check out:
 
 ## Change Log
 
+### 1.2.1
+  - Better handling of syntax errors in `env.json` (thanks yalcindo!)
+
 ### 1.2.0
   - Validation (via [validator.js](https://github.com/chriso/validator.js))
 

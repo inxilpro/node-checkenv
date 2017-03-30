@@ -377,17 +377,12 @@ export function check(pretty = true) {
 		load();
 	} catch (e) {
 
-		if (false === pretty) {
+		if (false === pretty || e.toString().indexOf('SyntaxError') !== -1) {
 			throw e;
 		}
 
-		if (e.toString().indexOf('SyntaxError') !== -1) {
-			throw new Error(e);
-		}
-		else {
-			const pkg = require('../package.json');
-			console.error("\n" + wrap(bgRed.white('ERROR:') + ' ' + blue(filename) + ' is missing; see ' + underline(pkg.homepage), width) + "\n");
-		}
+		const pkg = require('../package.json');
+		console.error("\n" + wrap(bgRed.white('ERROR:') + ' Unable to load ' + blue(filename) + '; see ' + underline(pkg.homepage), width) + "\n");
 		process.exit(1);
 	}
 
