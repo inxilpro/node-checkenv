@@ -376,15 +376,21 @@ export function check(pretty = true) {
 	try {
 		load();
 	} catch (e) {
+
 		if (false === pretty) {
 			throw e;
 		}
 
-		const pkg = require('../package.json');
-		console.error("\n" + wrap(bgRed.white('ERROR:') + ' ' + blue(filename) + ' is missing; see ' + underline(pkg.homepage), width) + "\n");
+		if (e.toString().indexOf('SyntaxError') !== -1) {
+			throw new Error(e);
+		}
+		else {
+			const pkg = require('../package.json');
+			console.error("\n" + wrap(bgRed.white('ERROR:') + ' ' + blue(filename) + ' is missing; see ' + underline(pkg.homepage), width) + "\n");
+		}
 		process.exit(1);
 	}
-	
+
 	let required = [];
 	let optional = [];
 	let validationErrors = [];
