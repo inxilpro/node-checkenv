@@ -409,6 +409,10 @@ export function check(pretty = true) {
 				validationErrors.push({ name, errors });
 			}
 			continue;
+		} else if (config[name].hasOwnProperty('default')) {
+			// Applying default values.
+			process.env[name] = config[name].default;
+			continue;
 		}
 
 		// Check if default is set
