@@ -412,7 +412,7 @@ export function check(pretty = true) {
 		}
 
 		// Check if default is set
-		if (opts.default) {
+		if (opts.default != null) {
 			debug(`Setting ${name} to ${JSON.stringify(opts.default)}`);
 			process.env[name] = opts.default;
 			optional.push(name);
