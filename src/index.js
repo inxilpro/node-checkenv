@@ -270,7 +270,7 @@ export function validate(name, value) {
 			case 'in':
 				validateOptions(name, options, 'array');
 				if (!validator.isIn(value, options)) {
-					errors.push('Must be on of: "' + options.join('", "') + '"');
+					errors.push('Must be one of the following: "' + options.join('", "') + '"');
 				}
 				break;
 
