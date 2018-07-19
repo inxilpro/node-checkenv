@@ -470,7 +470,7 @@ function header(count, adv) {
 	const s = (1 === count ? '' : 's');
 	const is = (1 === count ? 'is' : 'are');
 	let message = ` The following ${count} environmental variable${s} ${is} ${adv}: `;
-	console.error(wrap((/optional/.test(adv) ? bgYellow.white(message) : bgRed.black(message)), width));
+	console.error(wrap((/optional/.test(adv) ? bgYellow.black(message) : bgRed.black(message)), width));
 }
 
 // Get formatted help for variable

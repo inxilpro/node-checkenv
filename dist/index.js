@@ -2,13 +2,14 @@
 
 // Load dependencies
 
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
 exports.options = options;
 exports.setConfig = setConfig;
 exports.setFilename = setFilename;
@@ -55,7 +56,7 @@ var defaultOpts = {
 // Debugger
 var debug = function debug() {};
 if ('NODE_DEBUG' in process.env && /\bcheckenv\b/i.test(process.env.NODE_DEBUG)) {
-	debug = function (message) {
+	debug = function debug(message) {
 		return console.log((0, _chalk.yellow)('DEBUG: ' + message));
 	};
 }
@@ -125,7 +126,7 @@ function load(name) {
 }
 
 function validateOptions(name, options) {
-	var expectedType = arguments.length <= 2 || arguments[2] === undefined ? 'object' : arguments[2];
+	var expectedType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'object';
 
 	var actualType = Array.isArray(options) ? 'array' : typeof options === 'undefined' ? 'undefined' : _typeof(options);
 	if (expectedType !== actualType) {
@@ -178,8 +179,8 @@ function validate(name, value) {
 
 	// Run validators a build array of errors
 	var errors = validators.reduce(function (errors, _ref) {
-		var name = _ref.name;
-		var options = _ref.options;
+		var name = _ref.name,
+		    options = _ref.options;
 
 		switch (name) {
 			case 'contains':
@@ -363,9 +364,9 @@ function validate(name, value) {
 			case 'uuid5':
 			case 'uuid':
 				if (!options) {
-					var versionMatch = name.match(/(\d)$/);
-					if (versionMatch) {
-						options = parseInt(versionMatch[1], 10);
+					var _versionMatch = name.match(/(\d)$/);
+					if (_versionMatch) {
+						options = parseInt(_versionMatch[1], 10);
 					}
 				}
 				if (!_validator2.default.isUUID(value, options)) {
@@ -407,7 +408,7 @@ function validate(name, value) {
 
 // Run checks
 function check() {
-	var pretty = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	var pretty = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
 	try {
 		load();
@@ -480,8 +481,8 @@ function check() {
 		if (validationErrors.length) {
 			header(validationErrors.length, 'invalid');
 			validationErrors.forEach(function (_ref2) {
-				var name = _ref2.name;
-				var errors = _ref2.errors;
+				var name = _ref2.name,
+				    errors = _ref2.errors;
 
 				console.error(help(name, errors));
 			});
@@ -509,7 +510,7 @@ function header(count, adv) {
 	var s = 1 === count ? '' : 's';
 	var is = 1 === count ? 'is' : 'are';
 	var message = ' The following ' + count + ' environmental variable' + s + ' ' + is + ' ' + adv + ': ';
-	console.error((0, _wrapAnsi2.default)(/optional/.test(adv) ? _chalk.bgYellow.white(message) : _chalk.bgRed.black(message), _windowSize.width));
+	console.error((0, _wrapAnsi2.default)(/optional/.test(adv) ? _chalk.bgYellow.black(message) : _chalk.bgRed.black(message), _windowSize.width));
 }
 
 // Get formatted help for variable
